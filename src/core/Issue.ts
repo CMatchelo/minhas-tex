@@ -4,17 +4,42 @@ export default class Issue {
     #title: string
     #pagesQty: number
     #collection: string
+    #coverURL: string
+    #month: string
+    #year: number
+    #price: number
+    #writer: string
+    #artist: string
 
-    constructor(title: string, edition: number, pagesQty: number, collection: string, id: string = null) {
+    constructor(
+        title: string,
+        edition: number,
+        pagesQty: number,
+        collection: string,
+        coverURL: string,
+        month: string,
+        year: number,
+        price: number = null,
+        writer: string = null,
+        artist: string = null,
+        id: string = null
+    ) {
         this.#title = title;
         this.#edition = edition;
         this.#pagesQty = pagesQty;
         this.#collection = collection;
+        this.#coverURL = coverURL;
+        this.#month = month;
+        this.#year = year;
+        this.#price = price;
+        this.#writer = writer;
+        this.#artist = artist;
         this.#id = id;
     }
 
     static empty() {
-        return new Issue('',0, 0, 'normal')
+        // Titulo, Ediçao, Paginas, COlecao, cover, mes, ano, preço, escritor, artista, id
+        return new Issue('', 0, 0, 'normal', '', '', 0)
     }
 
     get id() {
@@ -29,11 +54,35 @@ export default class Issue {
         return this.#title
     }
 
+    get pagesQty() {
+        return this.#pagesQty
+    }
+
     get collection() {
         return this.#collection
     }
 
-    get pagesQty() {
-        return this.#pagesQty
+    get coverURL() {
+        return this.#coverURL
+    }
+
+    get month() {
+        return this.#month
+    }
+
+    get year() {
+        return this.#year
+    }
+
+    get price() {
+        return this.#price
+    }
+
+    get writer() {
+        return this.#writer
+    }
+
+    get artist() {
+        return this.#artist
     }
 }

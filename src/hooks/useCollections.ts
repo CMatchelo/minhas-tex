@@ -3,10 +3,12 @@ import Collection from "../core/collection";
 import CollectionRepository from "../core/collectionRepository";
 import CollectionCol from "../backend/db/collectionCol";
 import useVisualization from "./useVisualization";
+import useAuth from "../data/hook/useAuth"
 
 export default function useCollections() {
 
-    const repo: CollectionRepository = new CollectionCol()
+    const { user } = useAuth()
+    const repo: CollectionRepository = new CollectionCol(user?.uid)
 
     const [ collection, setCollection ] = useState<Collection>(Collection.empty())
     const [ collections, setCollections] = useState<Collection[]>([])
@@ -14,7 +16,7 @@ export default function useCollections() {
 
     useEffect(() => {
         getAll()
-    }, [])
+    }, [user])
 
     function getAll() {
         repo.getAll().then(collections => {

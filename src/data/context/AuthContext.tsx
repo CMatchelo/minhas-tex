@@ -48,7 +48,6 @@ export function AuthProvider(props) {
             setUser(localUser)
             cookiesManager(true)
             setLoading(false)
-            console.log(localUser)
             return localUser.email
         } else {
             setUser(null)

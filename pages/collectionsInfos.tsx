@@ -8,6 +8,7 @@ import Button from "../src/components/template/Button";
 import RegisterCollecttionForm from "../src/components/template/RegisterCollectionForm";
 
 
+
 export default function collectionsInfos() {
 
   const { tableVisible, showTable, collection, collections, newCollection, saveCollection, deleteCollection, selectCollection } = useCollections()

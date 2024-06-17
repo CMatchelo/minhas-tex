@@ -2,7 +2,13 @@ import Collection from "../../core/collection";
 import CollectionRepository from "../../core/collectionRepository";
 import firebase from "../../firebase/config";
 
+
 export default class CollectionCol implements CollectionRepository {
+    private userId: string;
+
+    constructor(userId: string) {
+        this.userId = userId;
+    }
 
     #conversor = {
         toFirestore(collection: Collection) {
@@ -40,7 +46,7 @@ export default class CollectionCol implements CollectionRepository {
     }
 
     private collection() {
-        return firebase.firestore().collection('collections').withConverter(this.#conversor)
+        return firebase.firestore().collection(`users/${this.userId}/collections`).withConverter(this.#conversor)
     }
 
 }

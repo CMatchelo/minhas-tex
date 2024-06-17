@@ -8,7 +8,7 @@ import useCollections from "../src/hooks/useCollections";
 
 export default function Home() {
 
-  const { tableVisible, showTable, issue, issues, newIssue, saveIssue, deleteIssue, selectIssue } = useIssues()
+  const { tableVisible, showTable, issue, issues, newIssue, saveIssue, setIssues, deleteIssue, selectIssue } = useIssues()
   const { collections } = useCollections()
 
   const [tempIssues, setTempIssues] = useState([])
@@ -27,13 +27,18 @@ export default function Home() {
     setTempIssues(issues)
   }, [issues])
 
+  const savingIssue = (updatedIssue) => {
+    saveIssue(updatedIssue)
+    setIssues([...issues, updatedIssue]);
+  }
+
   return (
     <Layout title="Tex" subtitle="Em contruçao">
       {tableVisible ? (
         <>
           <div>
-            <select id="collections" onChange={handleCollectionChange}>
-              <option value="all">Mostrar todos</option>
+            <select id="collections" onChange={handleCollectionChange} className="text-black dark:text-white bg-gray-200 dark:bg-gray-800 border-none back px-2 py-1">
+              <option value="all">Mostrar todas</option>
               {collections.map(collection => (
                 <option key={collection.id} value={collection.name}>
                   {collection.name}
@@ -41,7 +46,7 @@ export default function Home() {
               ))}
             </select>
           </div>
-          <div className="flex justify-end mb-5 ">
+          <div className="flex justify-end mb-5 mr-4 ">
             <Button color="yellow" onClick={newIssue}>Cadastrar edição</Button>
           </div>
           <IssuesGrid issues={tempIssues} selectIssue={selectIssue} deleteIssue={deleteIssue}></IssuesGrid>
@@ -49,7 +54,7 @@ export default function Home() {
       ) : (
         <RegisterEditionForm
           issue={issue}
-          issueChanged={saveIssue}
+          issueChanged={savingIssue}
           canceled={showTable} />
       )}
     </Layout>
