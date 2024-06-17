@@ -17,7 +17,6 @@ export default function collectionsInfos() {
     <Layout title="Minhas coleções" subtitle="Gerencia suas coleções aqui">
       {tableVisible ? (
         <>
-          <Button className="mb-4" color="yellow" onClick={newCollection}> Nova coleção </Button>
           <div className="flex justify-start">
             <CollectionGrid
               collections={collections}
@@ -25,6 +24,7 @@ export default function collectionsInfos() {
               deleteCollection={deleteCollection}
             />
           </div>
+          <Button className="mt-4" color="yellow" onClick={newCollection}> Nova coleção </Button>
         </>
       ) : (
         <RegisterCollecttionForm

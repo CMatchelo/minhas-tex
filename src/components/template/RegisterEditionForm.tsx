@@ -91,19 +91,19 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
     };
     // Titulo, Ediçao, Paginas, COlecao, Capa, mes, ano, preço, escritor, artista, id
     return (
-        <div className="flex flex-col mr-8">
+        <div className="flex flex-col md:mx-40 lg:mx-80 my-10">
 
             {id ? (
                 <Input readOnly text="Codigo" value={id} className="mb-4" />
             ) : false}
-            <Input text="Titulo *" value={title} onChange={setTitle} className="mb-4" />
-            <Input text="Edição *" type="number" value={edition} onChange={setEdition} className="mb-4" />
-            <Input text="Páginas *" type="number" value={pagesQty} onChange={setPagesQty} className="mb-4" />
+            <Input text="Titulo *" placeholder="Ex: Tex no velho oeste" value={title} onChange={setTitle} className="mb-4" />
+            <Input text="Edição *" placeholder="Ex: 153" type="number" value={edition} onChange={setEdition} className="mb-4" />
+            <Input text="Páginas *" placeholder="Ex: 198" type="number" value={pagesQty} onChange={setPagesQty} className="mb-4" />
             <label className="mb-2">Coleção *</label>
             <select
                 className={`
-                    border border-yellow-500 rounded-lg
-                    focus: outline-none px-4 py-2 text-black mb-4
+                    bg-gray-700 border-b border-yellow-500 rounded-lg
+                    focus: outline-none px-4 py-2 text-black
                 `}
                 id="collections" onChange={handleChange}>
                 <option value="">Escolha uma coleção</option>
@@ -115,7 +115,7 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
             </select>
 
             {!id ? (
-                <div className="flex flex-col mb-4">
+                <div className="flex flex-col my-4">
                     <label className="mb-2">Capa *</label>
                     <input type="file" onChange={handleFileChange} required />
                 </div>
@@ -124,8 +124,8 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
             <label className="mb-2">Mês de lançamento *</label>
             <select
                 className={`
-                    border border-yellow-500 rounded-lg
-                    focus: outline-none px-4 py-2 text-black mb-4
+                    bg-gray-700 border-b border-yellow-500 rounded-lg
+                    focus: outline-none px-4 py-2 text-black
                 `}
                 id="month" value={month} onChange={handleMonth}>
                 <option value="">Escolha um mês</option>

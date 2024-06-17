@@ -5,11 +5,12 @@ interface InputProps {
     readOnly?: boolean
     onChange?: (value: any) => void
     className?: string
+    placeholder?: string
 }
 
 export default function Input(props: InputProps) {
     return (
-        <div className={` flex flex-col ${props.className} `}>
+        <div className={` flex flex-col ${props.className}`}>
             <label className="mb-2">
                 {props.text}
             </label>
@@ -18,8 +19,9 @@ export default function Input(props: InputProps) {
                 value={props.value}
                 readOnly={props.readOnly}
                 onChange={e => props.onChange?.(e.target.value)}
+                placeholder={props.placeholder}
                 className={`
-                    border border-yellow-500 rounded-lg
+                    bg-gray-700 border-b border-yellow-500 rounded-lg
                     focus: outline-none px-4 py-2 text-black
                 `}
             />

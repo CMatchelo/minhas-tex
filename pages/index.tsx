@@ -36,7 +36,7 @@ export default function Home() {
     <Layout title="Tex" subtitle="Em contruçao">
       {tableVisible ? (
         <>
-          <div className="flex justify-between">
+          <div className="flex justify-between w-full">
             <div className="ml-4">
               <select id="collections" onChange={handleCollectionChange} className="text-black dark:text-white bg-gray-200 dark:bg-gray-800 border-none back px-2 py-1">
                 <option value="all">Mostrar todas</option>
@@ -46,9 +46,6 @@ export default function Home() {
                   </option>
                 ))}
               </select>
-            </div>
-            <div>
-              <input placeholder="Buscar por nome"></input>
             </div>
             <div className="flex justify-end mb-5 mr-4 ">
               <Button color="yellow" onClick={newIssue}>Cadastrar nova edição</Button>

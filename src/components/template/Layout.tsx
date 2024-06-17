@@ -22,7 +22,7 @@ export default function Layout(props: LayoutProps) {
         `}>
                 <SideMenu />
                 <div className={`
-                flex flex-col w-full bg-gray-300 p-7  dark:bg-gray-800
+                flex flex-col w-full bg-gray-300 dark:bg-gray-800
             `}>
                     <TopBar title={props.title} subtitle={props.subtitle} />
                     <Content>{props.children}</Content>

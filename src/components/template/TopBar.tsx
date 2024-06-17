@@ -14,7 +14,7 @@ export default function TopBar(props: TopBarProps) {
     const { theme, changeTheme } = useAppData()
 
     return (
-        <div className={`flex`}>
+        <div className={`flex bg-gray-200 dark:bg-gray-700 p-4`}>
             <Title title={props.title} subtitle={props.subtitle} />
             <div className={`flex flex-grow justify-end items-center`}>
                 <BtnChangeTheme theme={theme}changeTheme={changeTheme} />

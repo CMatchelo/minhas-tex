@@ -34,13 +34,13 @@ export default function IssuesGrid(props: IssueGridProps) {
     function renderData() {
         return props.issues?.map((issue, i) => {
             return (
-                <div key={issue.id} className="flex flex-col flex-grow w-full md:w-1/2 lg:w-1/3 xl:w-1/4 border border-gray-700 p-2 m-2 text-gray-700 dark:text-gray-300">
+                <div key={issue.id} className="flex flex-col flex-grow w-full shadow-2xl md:w-1/2 lg:w-1/3 xl:w-1/4 border border-gray-700 p-2 m-2 text-gray-700 dark:text-gray-300">
                     <div className="flex flex-row justify-between mb-2">
                         <span>#{issue.edition}</span>
                         <span>{issue.month} / {issue.year}</span>
                     </div>
                     <div className="flex flex-row h-48">
-                        <div className='w-1/3 mr-2 h-full'>
+                        <div className='w-1/3 mr-2 h-full shadow-xl'>
                             <img src={issue.coverURL} className="h-full w-full object-contain"/>
                         </div>
                         <div className='w-2/3 h-full flex flex-col'>
@@ -68,10 +68,10 @@ export default function IssuesGrid(props: IssueGridProps) {
         return (
             <td className="mt-4">
                 {props.selectIssue ? (
-                    <button className="mr-2" onClick={() => props.selectIssue?.(issue)}>{IconEdit}</button>
+                    <button className="mr-2 rounded-full p-2 hover:bg-yellow-500 transition-all duration-300" onClick={() => props.selectIssue?.(issue)}>{IconEdit}</button>
                 ) : false}
                 {props.deleteIssue ? (
-                    <button className="ml-2" onClick={() => props.deleteIssue?.(issue)}>{IconDelete}</button>
+                    <button className="ml-2 rounded-full p-2 hover:bg-red-700 transition-all duration-300" onClick={() => props.deleteIssue?.(issue)}>{IconDelete}</button>
                 ) : false}
             </td>
         )

@@ -20,7 +20,7 @@ export default function MenuItem(props: MenuItemProps) {
                 `}>
                 {props.icon}
                 <span className={`
-                        text-xs font-light
+                        text-xs font-light sm:block hidden
                     `}>
                     {props.text}
                 </span>
