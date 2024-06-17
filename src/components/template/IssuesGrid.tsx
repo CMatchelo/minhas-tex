@@ -48,10 +48,11 @@ export default function IssuesGrid(props: IssueGridProps) {
                                 {issue.title}
                             </div>
                             <div className="flex grow flex-col justify-center">
-                                <span>Escrito por: {issue.writer} </span>
-                                <span>Arte por: {issue.artist} </span>
-                                <span>Preço: <CurrencyFormatter value={issue.price} /></span>
+                                <span>Escrito por: {issue.writer ? issue.writer : "Não informado"} </span>
+                                <span>Arte por: {issue.artist ? issue.artist : "Não informado"} </span>
+                                <span>Preço: <CurrencyFormatter value={issue.price ? issue.price : "Não informado"} /></span>
                                 <span>Páginas: {issue.pagesQty} </span>
+                                <span>Coleção: {issue.collection ? issue.collection : "Não informado"} </span>
                             </div>
                         </div>
                     </div>

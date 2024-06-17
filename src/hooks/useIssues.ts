@@ -5,9 +5,12 @@ import Issue from "../core/Issue"
 import useVisualization from "./useVisualization"
 import useAuth from "../data/hook/useAuth"
 import { storage } from "../firebase/config"
+import useCollections from "./useCollections"
+import Collection from "../core/collection"
 
 export default function useIssues() {
     const { user } = useAuth()
+    const { collections, saveCollection } = useCollections();
 
     const [issue, setIssue] = useState<Issue>(Issue.empty())
     const [issues, setIssues] = useState<Issue[]>([])
@@ -32,7 +35,7 @@ export default function useIssues() {
     }
 
     async function deleteIssue(issue: Issue) {
-        /*const id = issue.id
+        const id = issue.id
         setIssues((prevIssues) => {
             const index = prevIssues.findIndex(issue => issue.id === id);
             if (index !== -1) {
@@ -42,21 +45,29 @@ export default function useIssues() {
             }
             return prevIssues;
         });
-        await repo.delete(issue)*/
+        const tempCol = collections.find(col => col.name === issue.collection)
+        var newQtyEditions = tempCol.qtyEditions - 1
+        var newQtyPages = tempCol.qtyPages - issue.pagesQty
+        var newPrice = Number(tempCol.totalPrice) - Number(issue.price)
+        const newCol = new Collection(tempCol.id, tempCol.name, tempCol.cover, newQtyEditions, newQtyPages, newPrice)
+        saveCollection(newCol)
+        await repo.delete(issue)
         try {
-            const filePath = decodeURIComponent(new URL(issue.coverURL).pathname);
-            console.log("1", issue.coverURL)
-            const fileRef = storage.ref(issue.coverURL);
-            console.log("2", fileRef)
+            const fileRef = storage.refFromURL(issue.coverURL);
             await fileRef.delete();
-          } catch (error) {
-            console.error("Error deleting file:", error);
-            throw error;
-          }
+        } catch (error) {
+            console.error("Erro ao deletar o arquivo:", error);
+        }
         //getAll()
     }
 
     async function saveIssue(issue: Issue) {
+        const tempCol = collections.find(col => col.name === issue.collection)
+        var newQtyEditions = tempCol.qtyEditions + 1
+        var newQtyPages = tempCol.qtyPages + issue.pagesQty
+        var newPrice = Number(tempCol.totalPrice) + Number(issue.price)
+        const newCol = new Collection(tempCol.id, tempCol.name, tempCol.cover, newQtyEditions, newQtyPages, newPrice)
+        saveCollection(newCol)
         await repo.save(issue)
         showTable()
         //getAll()

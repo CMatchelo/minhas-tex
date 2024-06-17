@@ -36,18 +36,23 @@ export default function Home() {
     <Layout title="Tex" subtitle="Em contruçao">
       {tableVisible ? (
         <>
-          <div>
-            <select id="collections" onChange={handleCollectionChange} className="text-black dark:text-white bg-gray-200 dark:bg-gray-800 border-none back px-2 py-1">
-              <option value="all">Mostrar todas</option>
-              {collections.map(collection => (
-                <option key={collection.id} value={collection.name}>
-                  {collection.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex justify-end mb-5 mr-4 ">
-            <Button color="yellow" onClick={newIssue}>Cadastrar edição</Button>
+          <div className="flex justify-between">
+            <div className="ml-4">
+              <select id="collections" onChange={handleCollectionChange} className="text-black dark:text-white bg-gray-200 dark:bg-gray-800 border-none back px-2 py-1">
+                <option value="all">Mostrar todas</option>
+                {collections.map(collection => (
+                  <option key={collection.id} value={collection.name}>
+                    {collection.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <input placeholder="Buscar por nome"></input>
+            </div>
+            <div className="flex justify-end mb-5 mr-4 ">
+              <Button color="yellow" onClick={newIssue}>Cadastrar nova edição</Button>
+            </div>
           </div>
           <IssuesGrid issues={tempIssues} selectIssue={selectIssue} deleteIssue={deleteIssue}></IssuesGrid>
         </>

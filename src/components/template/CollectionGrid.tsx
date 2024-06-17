@@ -29,8 +29,8 @@ export default function CollectionGrid(props: CollectionGridProps) {
                         <span className="text-center p-3 text-black ">{collection.name}</span>
                     </div>
                     <div className="flex items-end justify-center relative w-full h-full z-10 opacity-0 hover:opacity-100 transition-opacity duration-300">
-                        <span className="text-left p-3 text-black dark:text-white">{collection.qtyEditions}</span>
-                        <span className="text-left p-3 text-black dark:text-white">{collection.qtyPages}</span>
+                        <span className="text-left p-3 text-black dark:text-white">Ediçoes: {collection.qtyEditions}</span>
+                        <span className="text-left p-3 text-black dark:text-white">Paginas: {collection.qtyPages}</span>
                         <span className="text-left p-3 text-black dark:text-white"><CurrencyFormatter value={collection.totalPrice} /></span>
                     </div>
                 </div>

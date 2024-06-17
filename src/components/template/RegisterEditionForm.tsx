@@ -29,10 +29,14 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
     const [writer, setWriter] = useState(props.issue?.writer ?? '')
     const [artist, setArtist] = useState(props.issue?.artist ?? '')
     const { collections } = useCollections();
-
+    // 
     const handleChange = (event) => {
         setCollection(event.target.value)
     };
+
+    const handleMonth = (event) => {
+        setMonth(event.target.value)
+    }
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -68,10 +72,15 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
             return;
         }
 
+        if (!title || !edition || edition === 0 || !pagesQty || pagesQty === 0 || !collection || !month || !year || year === 0) {
+            console.log(title, edition, pagesQty, collection, month, year)
+            alert("Preencha todos os dados obrigatórios")
+            return
+        }
         if (coverURL) {
             const renamedFile = renameFile(coverURL);
-            const storageRef = storage.ref(`${user.uid}/capas/${coverURL.name}`);
-            await storageRef.put(coverURL);
+            const storageRef = storage.ref(`${user.uid}/capas/${renamedFile.name}`);
+            await storageRef.put(renamedFile);
             newImage = await storageRef.getDownloadURL();
         } else {
             newImage = downloadURL
@@ -82,30 +91,61 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
     };
     // Titulo, Ediçao, Paginas, COlecao, Capa, mes, ano, preço, escritor, artista, id
     return (
-        <div>
+        <div className="flex flex-col mr-8">
 
             {id ? (
                 <Input readOnly text="Codigo" value={id} className="mb-4" />
             ) : false}
-            <Input text="Titulo" value={title} onChange={setTitle} className="mb-4" />
-            <Input text="Edição" type="number" value={edition} onChange={setEdition} className="mb-4" />
-            <Input text="Páginas" type="number" value={pagesQty} onChange={setPagesQty} />
-            <select id="collections" onChange={handleChange}>
-                <option value="">Select a Collection</option>
+            <Input text="Titulo *" value={title} onChange={setTitle} className="mb-4" />
+            <Input text="Edição *" type="number" value={edition} onChange={setEdition} className="mb-4" />
+            <Input text="Páginas *" type="number" value={pagesQty} onChange={setPagesQty} className="mb-4" />
+            <label className="mb-2">Coleção *</label>
+            <select
+                className={`
+                    border border-yellow-500 rounded-lg
+                    focus: outline-none px-4 py-2 text-black mb-4
+                `}
+                id="collections" onChange={handleChange}>
+                <option value="">Escolha uma coleção</option>
                 {collections.map(collection => (
                     <option key={collection.id} value={collection.name}>
                         {collection.name}
                     </option>
                 ))}
             </select>
+
             {!id ? (
-                <input type="file" onChange={handleFileChange} required />
+                <div className="flex flex-col mb-4">
+                    <label className="mb-2">Capa *</label>
+                    <input type="file" onChange={handleFileChange} required />
+                </div>
             ) : false}
-            <Input text="Mês" value={month} onChange={setMonth} />
-            <Input text="Ano" type="number" value={year} onChange={setYear} />
-            <Input text="Preço" type="number" value={price} onChange={setPrice} />
-            <Input text="Roteiro por:" value={writer} onChange={setWriter} />
-            <Input text="Desenhos por:" value={artist} onChange={setArtist} />
+
+            <label className="mb-2">Mês de lançamento *</label>
+            <select
+                className={`
+                    border border-yellow-500 rounded-lg
+                    focus: outline-none px-4 py-2 text-black mb-4
+                `}
+                id="month" value={month} onChange={handleMonth}>
+                <option value="">Escolha um mês</option>
+                <option value="Janeiro">Janeiro</option>
+                <option value="Fevereiro">Fevereiro</option>
+                <option value="Março">Março</option>
+                <option value="Abril">Abril</option>
+                <option value="Maio">Maio</option>
+                <option value="Junho">Junho</option>
+                <option value="Julho">Julho</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Setembro">Setembro</option>
+                <option value="Outubro">Outubro</option>
+                <option value="Novembro">Novembro</option>
+                <option value="Dezembro">Dezembro</option>
+            </select>
+            <Input text="Ano de lançamento *" type="number" value={year} onChange={setYear} className="mb-4" />
+            <Input text="Preço" type="number" value={price} onChange={setPrice} className="mb-4" />
+            <Input text="Roteiro por:" value={writer} onChange={setWriter} className="mb-4" />
+            <Input text="Desenhos por:" value={artist} onChange={setArtist} className="mb-4" />
             <div className="flex justify-end mt-7">
                 <Button color="yellow" className="mr-2"
                     onClick={handleSubmitIssue}>

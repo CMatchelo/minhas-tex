@@ -5,7 +5,7 @@ export default class Collection {
     #qtyEditions: number
     #qtyPages: number
     #totalPrice: number
-
+    
     constructor(id: string = null, name: string, cover: string = '', qtyEditions: number = 0, qtyPages: number = 0, totalPrice: number = 0) {
         this.#id = id;
         this.#name = name;

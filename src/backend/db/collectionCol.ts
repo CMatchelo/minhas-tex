@@ -9,7 +9,7 @@ export default class CollectionCol implements CollectionRepository {
     constructor(userId: string) {
         this.userId = userId;
     }
-
+    // id name cover edition pages price
     #conversor = {
         toFirestore(collection: Collection) {
             return {
@@ -21,7 +21,7 @@ export default class CollectionCol implements CollectionRepository {
         },
         fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Collection {
             const data = snapshot.data(options)
-            return new Collection(snapshot?.id, data.name, data.qtyEditions, data.qtyPages, data.totalPrice)
+            return new Collection(snapshot?.id, data.name, data.cover, data.qtyEditions, data.qtyPages, data.totalPrice)
         }
     }
 
