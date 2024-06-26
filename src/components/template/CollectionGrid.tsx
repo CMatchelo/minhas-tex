@@ -2,6 +2,8 @@ import Collection from "../../core/collection"
 import CurrencyFormatter from "../../functions/formatCurrency"
 import collectionImg from "../../../public/collectionGeneric.png"
 import { useEffect, useState } from "react"
+import { useRouter } from 'next/router';
+
 
 interface CollectionGridProps {
     collections: Collection[]
@@ -11,17 +13,42 @@ interface CollectionGridProps {
 
 export default function CollectionGrid(props: CollectionGridProps) {
 
+    const router = useRouter();
+    const totalPrice = props.collections.reduce((acc, collection) => acc + collection.totalPrice, 0);
+    const totalIssues = props.collections.reduce((acc, collection) => acc + collection.qtyEditions, 0);
+    const totalPages = props.collections.reduce((acc, collection) => acc + collection.qtyPages, 0);
+
+    const goToCol = (col) => {
+        window.localStorage.setItem('colToOpen', col);
+        router.push('/');
+    }
+
     function renderData() {
         return props.collections?.map((collection, i) => {
             return (
                 <div key={collection.id} className={`
-                    flex flex-grow border-b border-gray-700 dark:border-gray-200
+                    w-full border-b border-gray-700 dark:border-gray-200
                 `}>
-                    <div className="flex">
-                        <span className="text-center w-40 p-3 text-gray-800 dark:text-gray-200">{collection.name}</span>
-                        <span className="text-center w-40 p-3 text-gray-800 dark:text-gray-200">#{collection.qtyEditions}</span>
-                        <span className="text-center w-40 p-3 text-gray-800 dark:text-gray-200">#{collection.qtyPages}</span>
-                        <span className="text-center w-40 p-3 text-gray-800 dark:text-gray-200"><CurrencyFormatter value={collection.totalPrice} /></span>
+                    <div className="flex flex-col md:flex-row w-full justify-evenly">
+                        <div className="flex md:justify-center p-3 flex-1">
+                            <span className="flex md:hidden text-gray-800 dark:text-gray-200">Coleção: </span>
+                            <span className="text-gray-800 dark:text-gray-200"> {collection.name}</span>
+                        </div>
+                        <div className="flex md:justify-center p-3 flex-1">
+                            <span className="flex md:hidden text-gray-800 dark:text-gray-200">Edições: </span>
+                            <span className="text-gray-800 dark:text-gray-200"> {collection.qtyEditions}</span>
+                        </div>
+                        <div className="flex md:justify-center p-3 flex-1">
+                            <span className="flex md:hidden text-gray-800 dark:text-gray-200">Páginas: </span>
+                            <span className="text-gray-800 dark:text-gray-200"> {collection.qtyPages}</span>
+                        </div>
+                        <div className="flex md:justify-center p-3 flex-1">
+                            <span className="flex md:hidden text-gray-800 dark:text-gray-200">Valor: </span>
+                            <span className="text-gray-800 dark:text-gray-200"><CurrencyFormatter value={collection.totalPrice} /></span>
+                        </div>
+                        <div className="flex md:justify-center p-3 flex-1">
+                            <span className="text-gray-800 dark:text-gray-200" onClick={() => goToCol(collection.name)}>Ver coleção</span>
+                        </div>
                     </div>
                 </div>
             )
@@ -30,39 +57,31 @@ export default function CollectionGrid(props: CollectionGridProps) {
 
     return (
         <div className={`
-            flex flex-wrap flex-col w-1/2 justify-center mx-4 align-middle
+            w-full flex flex-col
         `}>
             <div className={`
-                    flex flex-grow border-b border-gray-700 dark:border-gray-200
+                    w-full border-b border-gray-700 dark:border-gray-200 ustify-evenly
                 `}>
-                <div className="flex">
-                    <span className="text-center w-40 p-3 text-gray-800 dark:text-gray-200 ">Nome da coleção</span>
-                    <span className="text-center w-40 p-3 text-gray-800 dark:text-gray-200">Edições</span>
-                    <span className="text-center w-40 p-3 text-gray-800 dark:text-gray-200">Paginas</span>
-                    <span className="text-center w-40 p-3 text-gray-800 dark:text-gray-200">Valor da coleção</span>
+                <div className="hidden flex-col md:flex-row md:flex">
+                    <span className="text-center p-3 text-gray-800 flex-1 dark:text-gray-200 ">Nome da coleção</span>
+                    <span className="text-center p-3 text-gray-800 flex-1 dark:text-gray-200">Edições</span>
+                    <span className="text-center p-3 text-gray-800 flex-1 dark:text-gray-200">Paginas</span>
+                    <span className="text-center p-3 text-gray-800 flex-1 dark:text-gray-200">Valor da coleção</span>
+                    <span className="text-center p-3 text-gray-800 flex-1 dark:text-gray-200">Ações</span>
                 </div>
             </div>
             {renderData()}
+            <div className={`
+                    w-full border-b border-gray-700 dark:border-gray-200
+                `}>
+                <div className="flex flex-col md:flex-row w-full justify-evenly">
+                    <span className="text-center p-3 text-gray-800 flex-1 dark:text-gray-200">Total</span>
+                    <span className="text-center p-3 text-gray-800 flex-1 dark:text-gray-200">Edições: {totalIssues}</span>
+                    <span className="text-center p-3 text-gray-800 flex-1 dark:text-gray-200">Paginas: {totalPages}</span>
+                    <span className="text-center p-3 text-gray-800 flex-1 dark:text-gray-200">Valor total: <CurrencyFormatter value={totalPrice} /></span>
+                    <span className="text-center p-3 text-gray-800 flex-1 dark:text-gray-200">------</span>
+                </div>
+            </div>
         </div>
     )
 }
-
-/*
-
-{/* <div className="flex items-end justify-center relative w-full h-full z-10 opacity-0 hover:opacity-100 transition-opacity duration-300"> 
-{ <table className={`w-full rounded-xl overflow-hidden`}>
-            <thead className={`
-                bg-gradient-to-r from-gray-500 bg-gray-600 to-gray-500 text-gray-100
-                `}>
-                <tr>
-                    <th className="px-3 py-4 text-left text-black">Titulo</th>
-                    <th className="px-3 py-4 text-left text-black">Revistas</th>
-                    <th className="px-3 py-4 text-left text-black">Páginas</th>
-                    <th className="px-3 py-4 text-left text-black">Valor total</th>
-                    <th className="px-3 py-4 text-left text-black">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {renderData()}
-            </tbody>
-        </table> } */

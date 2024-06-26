@@ -21,6 +21,7 @@ export default function useIssues() {
         getAll()
     }, [user]);
 
+
     function getAll() {
         console.log("Getting all")
         repo.getAll().then(issues => {

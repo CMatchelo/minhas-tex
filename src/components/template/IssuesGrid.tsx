@@ -39,11 +39,11 @@ export default function IssuesGrid(props: IssueGridProps) {
                         <span>#{issue.edition}</span>
                         <span>{issue.month} / {issue.year}</span>
                     </div>
-                    <div className="flex flex-row h-48">
-                        <div className='w-1/3 mr-2 h-full shadow-xl'>
+                    <div className="flex flex-col items-center md:flex-row md:h-48">
+                        <div className='w-2/3 mb-4 md:mb-0 md:w-1/3 mr-2 h-full'>
                             <img src={issue.coverURL} className="h-full w-full object-contain"/>
                         </div>
-                        <div className='w-2/3 h-full flex flex-col'>
+                        <div className='w-[90%] md:w-2/3 h-full flex flex-col'>
                             <div className='text-xl font-bold flex justify-center mb-1 border-b border-gray-700'>
                                 {issue.title}
                             </div>
@@ -53,6 +53,7 @@ export default function IssuesGrid(props: IssueGridProps) {
                                 <span>Preço: <CurrencyFormatter value={issue.price ? issue.price : "Não informado"} /></span>
                                 <span>Páginas: {issue.pagesQty} </span>
                                 <span>Coleção: {issue.collection ? issue.collection : "Não informado"} </span>
+                                {issue.additionalStories && <span>Histórias adicionais: {issue.additionalStories}</span>}
                             </div>
                         </div>
                     </div>

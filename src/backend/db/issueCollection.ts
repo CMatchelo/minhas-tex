@@ -21,7 +21,8 @@ export default class IssueCollection implements IssueRepository {
                 year: issue.year,
                 price: issue.price,
                 writer: issue.writer,
-                artist: issue.artist
+                artist: issue.artist,
+                additionalStories: issue.additionalStories
             }
         },
         fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Issue {
@@ -39,6 +40,7 @@ export default class IssueCollection implements IssueRepository {
                     data.price,
                     data.writer,
                     data.artist,
+                    data.additionalStories,
                     snapshot?.id
                 )
         }

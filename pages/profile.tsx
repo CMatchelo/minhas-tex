@@ -1,4 +1,5 @@
 import Layout from "../src/components/template/Layout";
+import React, { useState }  from "react";
 
 
 export default function Profile() {

@@ -9,15 +9,15 @@ import RegisterCollecttionForm from "../src/components/template/RegisterCollecti
 
 
 
-export default function collectionsInfos() {
+export default function CollectionsInfos() {
 
   const { tableVisible, showTable, collection, collections, newCollection, saveCollection, deleteCollection, selectCollection } = useCollections()
 
   return (
-    <Layout title="Minhas coleções" subtitle="Gerencia suas coleções aqui">
+    <Layout title="Minhas coleções" subtitle="Gerencie suas coleções aqui">
       {tableVisible ? (
         <>
-          <div className="flex justify-start">
+          <div className="flex justify-start w-full px-4">
             <CollectionGrid
               collections={collections}
               selectedCollection={selectCollection}

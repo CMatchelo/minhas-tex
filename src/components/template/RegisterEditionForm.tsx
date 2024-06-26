@@ -14,7 +14,7 @@ interface RegisterEditionFormProps {
 
 export default function RegisterEditionForm(props: RegisterEditionFormProps) {
 
-    // Titulo, Ediçao, Paginas, COlecao, Capa, mes, ano, preço, escritor, artista, id
+    // Titulo, Ediçao, Paginas, COlecao, Capa, mes, ano, preço, escritor, artista, mais hitorias, id
     const { user } = useAuth();
     const id = props.issue?.id ?? null
     const [title, setTitle] = useState(props.issue?.title ?? '')
@@ -28,6 +28,7 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
     const [price, setPrice] = useState(props.issue?.price ?? 0)
     const [writer, setWriter] = useState(props.issue?.writer ?? '')
     const [artist, setArtist] = useState(props.issue?.artist ?? '')
+    const [additionalStories, setAdditionalStories] = useState(props.issue?.additionalStories ?? '')
     const { collections } = useCollections();
     // 
     const handleChange = (event) => {
@@ -86,12 +87,12 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
             newImage = downloadURL
         }
 
-        const newIssue = new Issue(title, +edition, +pagesQty, collection, newImage, month, year, price, writer, artist, id);
+        const newIssue = new Issue(title, +edition, +pagesQty, collection, newImage, month, year, price, writer, artist, additionalStories, id);
         props.issueChanged?.(newIssue);
     };
     // Titulo, Ediçao, Paginas, COlecao, Capa, mes, ano, preço, escritor, artista, id
     return (
-        <div className="flex flex-col md:mx-40 lg:mx-80 my-10">
+        <div className="flex flex-col md:mx-40 lg:mx-80 my-10 text-black dark:text-white">
 
             {id ? (
                 <Input readOnly text="Codigo" value={id} className="mb-4" />
@@ -102,8 +103,8 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
             <label className="mb-2">Coleção *</label>
             <select
                 className={`
-                    bg-gray-700 border-b border-yellow-500 rounded-lg
-                    focus: outline-none px-4 py-2 text-black
+                    bg-gray-200 dark:bg-gray-700 border-b border-yellow-500 rounded-lg
+                    focus: outline-none px-4 py-2 text-gray-700 dark:text-gray-200
                 `}
                 id="collections" onChange={handleChange}>
                 <option value="">Escolha uma coleção</option>
@@ -124,8 +125,8 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
             <label className="mb-2">Mês de lançamento *</label>
             <select
                 className={`
-                    bg-gray-700 border-b border-yellow-500 rounded-lg
-                    focus: outline-none px-4 py-2 text-black
+                    bg-gray-200 dark:bg-gray-700 border-b border-yellow-500 rounded-lg
+                    focus: outline-none px-4 py-2 text-gray-700 dark:text-gray-200
                 `}
                 id="month" value={month} onChange={handleMonth}>
                 <option value="">Escolha um mês</option>
@@ -146,6 +147,7 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
             <Input text="Preço" type="number" value={price} onChange={setPrice} className="mb-4" />
             <Input text="Roteiro por:" value={writer} onChange={setWriter} className="mb-4" />
             <Input text="Desenhos por:" value={artist} onChange={setArtist} className="mb-4" />
+            <Input text="Histórias adicionais:" value={additionalStories} onChange={setAdditionalStories} className="mb-4" />
             <div className="flex justify-end mt-7">
                 <Button color="yellow" className="mr-2"
                     onClick={handleSubmitIssue}>

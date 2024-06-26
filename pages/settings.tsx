@@ -1,5 +1,5 @@
 import Layout from "../src/components/template/Layout";
-import React from "react";
+import React, { useState }  from "react";
 
 export default function Settings() {
   return (

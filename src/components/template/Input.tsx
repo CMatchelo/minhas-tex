@@ -21,8 +21,8 @@ export default function Input(props: InputProps) {
                 onChange={e => props.onChange?.(e.target.value)}
                 placeholder={props.placeholder}
                 className={`
-                    bg-gray-700 border-b border-yellow-500 rounded-lg
-                    focus: outline-none px-4 py-2 text-black
+                    bg-gray-200 dark:bg-gray-700 border-b border-yellow-500 rounded-lg
+                    focus: outline-none px-4 py-2 text-gray-700 dark:text-gray-200
                 `}
             />
         </div>

@@ -10,6 +10,7 @@ export default class Issue {
     #price: number
     #writer: string
     #artist: string
+    #additionalStories: string
 
     constructor(
         title: string,
@@ -22,7 +23,8 @@ export default class Issue {
         price: number = null,
         writer: string = null,
         artist: string = null,
-        id: string = null
+        additionalStories: string = null,
+        id: string = null,
     ) {
         this.#title = title;
         this.#edition = edition;
@@ -34,6 +36,7 @@ export default class Issue {
         this.#price = price;
         this.#writer = writer;
         this.#artist = artist;
+        this.#additionalStories = additionalStories;
         this.#id = id;
     }
 
@@ -84,5 +87,9 @@ export default class Issue {
 
     get artist() {
         return this.#artist
+    }
+
+    get additionalStories() {
+        return this.#additionalStories
     }
 }

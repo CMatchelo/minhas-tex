@@ -1,6 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import AuthInput from "../src/components/auth/AuthInput";
-import texCover from '../public/texCover.jpg'
+import collectionBg from '../public/collectionBg.jpg'
 import { IconWarning } from "../src/components/icons";
 import useAuth from "../src/data/hook/useAuth";
 
@@ -36,7 +36,7 @@ export default function Auth() {
     return (
         <div className="flex h-screen items-center justify-center">
             <div className="hidden md:block md:w-1/2 lg:w-2/3">
-                <img src={texCover.src} alt="Capa Tex" className="h-screen w-full object-cover" />
+                <img src={collectionBg.src} alt="Capa Tex" className="h-screen w-full object-cover filter grayscale blur-[1px]" />
             </div>
             <div className={`
             m-10 w-full md:w-1/2 lg:w-1/3
