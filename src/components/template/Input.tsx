@@ -1,5 +1,5 @@
 interface InputProps {
-    text: string
+    text?: string
     type?: 'text' | 'number'
     value?: any
     readOnly?: boolean

@@ -14,13 +14,11 @@ export default function Home() {
 
   const [tempIssues, setTempIssues] = useState([])
   const [sortedIssues, setSortedIssues] = useState([]);
-
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredIssues, setFiltereseIssues] = useState(sortedIssues)
 
+  // Handle showing by collection
   const handleCollectionChange = (event) => {
     const localCollection = event.target ? event.target.value : event;
-    console.log("Filtering: ", localCollection)
     if (localCollection == 'all') {
       setTempIssues(issues);
     } else {
@@ -29,6 +27,7 @@ export default function Home() {
     }
   };
 
+  // Handle showing by search term
   useEffect(() => {
     const filterData = () => {
       if (searchTerm === '') {
@@ -44,8 +43,9 @@ export default function Home() {
 
     filterData();
   }, [searchTerm, issues]);
+  
 
-
+  // Handle sort by number
   useEffect(() => {
     const sorted = [...tempIssues].sort((a, b) => a.edition - b.edition);
     setSortedIssues(sorted);
@@ -53,7 +53,6 @@ export default function Home() {
 
   useEffect(() => {
     const localCollection = window.localStorage.getItem('colToOpen');
-    console.log("Use effect executed", localCollection)
     if (localCollection) {
       handleCollectionChange(localCollection);
       window.localStorage.removeItem('collection');
@@ -74,7 +73,7 @@ export default function Home() {
   }
 
   return (
-    <Layout title="Tex" subtitle="Em contruçao">
+    <Layout sortedIssues={sortedIssues} title="Tex" subtitle="Em contruçao">
       {tableVisible ? (
         <>
           <div className="flex flex-col items-center md:flex-row md:justify-between w-full px-4 m-4">

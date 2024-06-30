@@ -9,6 +9,7 @@ interface LayoutProps {
     title: string
     subtitle: string
     children?: any
+    sortedIssues?: any[]
 }
 
 export default function Layout(props: LayoutProps) {
@@ -24,7 +25,7 @@ export default function Layout(props: LayoutProps) {
                 <div className={`
                 flex flex-col w-full bg-gray-300 dark:bg-gray-800
             `}>
-                    <TopBar title={props.title} subtitle={props.subtitle} />
+                    <TopBar sortedIssues={props.sortedIssues} title={props.title} subtitle={props.subtitle} />
                     <Content>{props.children}</Content>
                 </div>
             </div>

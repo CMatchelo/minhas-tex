@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Title from "./Title";
 import BtnChangeTheme from "./BtnChangeTheme";
 import useAppData from "../../data/hook/useAppData";
@@ -7,6 +7,7 @@ import UserAvatar from "./UserAvatar";
 interface TopBarProps {
     title: string
     subtitle: string
+    sortedIssues?: any[]
 }
 
 export default function TopBar(props: TopBarProps) {
@@ -16,8 +17,20 @@ export default function TopBar(props: TopBarProps) {
     return (
         <div className={`flex bg-gray-200 dark:bg-gray-700 p-4`}>
             <Title title={props.title} subtitle={props.subtitle} />
+            <div className="flex items-center text-xl font-bold ml-5 dark:text-gray-200">
+                {props.sortedIssues && (
+                    <div>
+                        {props.sortedIssues?.length > 0 ? (
+                            <span>Encontramos {props.sortedIssues.length} edições </span>
+                        ) : (
+                            <span> Oops, não encontramos revistas para exibir </span>
+                        )}
+                    </div>
+                )}
+
+            </div>
             <div className={`flex flex-grow justify-end items-center`}>
-                <BtnChangeTheme theme={theme}changeTheme={changeTheme} />
+                <BtnChangeTheme theme={theme} changeTheme={changeTheme} />
                 <UserAvatar className="ml-2" />
             </div>
         </div>

@@ -74,7 +74,6 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
         }
 
         if (!title || !edition || edition === 0 || !pagesQty || pagesQty === 0 || !collection || !month || !year || year === 0) {
-            console.log(title, edition, pagesQty, collection, month, year)
             alert("Preencha todos os dados obrigatórios")
             return
         }

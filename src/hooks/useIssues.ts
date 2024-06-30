@@ -21,9 +21,7 @@ export default function useIssues() {
         getAll()
     }, [user]);
 
-
     function getAll() {
-        console.log("Getting all")
         repo.getAll().then(issues => {
             setIssues(issues)
             showTable()
@@ -89,6 +87,6 @@ export default function useIssues() {
         saveIssue,
         deleteIssue,
         selectIssue,
-        getAll,
+        getAll
     }
 }
