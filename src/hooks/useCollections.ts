@@ -19,6 +19,7 @@ export default function useCollections() {
     }, [user])
 
     function getAll() {
+        console.log("getting all collections")
         repo.getAll().then(collections => {
             setCollections(collections)
             showTable()            

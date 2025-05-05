@@ -73,7 +73,7 @@ export default function Home() {
   }
 
   return (
-    <Layout sortedIssues={sortedIssues} title="Tex" subtitle="Em contruçao">
+    <Layout sortedIssues={sortedIssues} title="Minhas HQs" subtitle="">
       {tableVisible ? (
         <>
           <div className="flex flex-col items-center md:flex-row md:justify-between w-full px-4 m-4">
@@ -87,11 +87,11 @@ export default function Home() {
                 ))}
               </select>
             </div>
-            <div className="w-full md:w-[50%] md:mb-0">
+            <div className="w-full md:w-[50%] mb-3 md:mb-0">
               <Input placeholder="Busque por história" value={searchTerm} onChange={setSearchTerm} className="w-[100%]" />
             </div>
             <div className="flex justify-end w-full md:w-[20%]">
-              <Button color="yellow" onClick={newIssue}>Cadastrar nova edição</Button>
+              <Button className="w-full" color="yellow" onClick={newIssue}>Cadastrar nova edição</Button>
             </div>
           </div>
           <IssuesGrid issues={sortedIssues} selectIssue={selectIssue} deleteIssue={deleteIssue}></IssuesGrid>

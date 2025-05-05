@@ -40,7 +40,7 @@ export default function CollectionGrid(props: CollectionGridProps) {
                         </div>
                         <div className="flex md:justify-center p-3 flex-1">
                             <span className="flex md:hidden text-gray-800 dark:text-gray-200">Páginas: </span>
-                            <span className="text-gray-800 dark:text-gray-200"> {collection.qtyPages}</span>
+                            <span className="text-gray-800 dark:text-gray-200"> {Number(collection.qtyPages).toFixed(0)} </span>
                         </div>
                         <div className="flex md:justify-center p-3 flex-1">
                             <span className="flex md:hidden text-gray-800 dark:text-gray-200">Valor: </span>

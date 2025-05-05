@@ -16,18 +16,20 @@ export default function TopBar(props: TopBarProps) {
 
     return (
         <div className={`flex bg-gray-200 dark:bg-gray-700 p-4`}>
-            <Title title={props.title} subtitle={props.subtitle} />
-            <div className="flex items-center text-xl font-bold ml-5 dark:text-gray-200">
-                {props.sortedIssues && (
-                    <div>
-                        {props.sortedIssues?.length > 0 ? (
-                            <span>Encontramos {props.sortedIssues.length} edições </span>
-                        ) : (
-                            <span> Oops, não encontramos revistas para exibir </span>
-                        )}
-                    </div>
-                )}
+            <div className=" flex flex-col md:flex-row">
+                <Title title={props.title} subtitle={props.subtitle} />
+                <div className="flex items-center text-md md:text-xl font-bold md:ml-5 dark:text-gray-200">
+                    {props.sortedIssues && (
+                        <div>
+                            {props.sortedIssues?.length > 0 ? (
+                                <span>{props.sortedIssues.length} edições encontradas </span>
+                            ) : (
+                                <span> Oops, não encontramos revistas para exibir </span>
+                            )}
+                        </div>
+                    )}
 
+                </div>
             </div>
             <div className={`flex flex-grow justify-end items-center`}>
                 <BtnChangeTheme theme={theme} changeTheme={changeTheme} />

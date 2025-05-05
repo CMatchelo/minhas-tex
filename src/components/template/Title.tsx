@@ -9,7 +9,7 @@ export default function Title(props: TitleProps) {
     return (
         <div>
             <h1 className={`
-                font-black text-3xl text-gray-900
+                font-black text-2xl md:text-3xl text-gray-900
                 dark:text-gray-100
             `}>
                 {props.title}

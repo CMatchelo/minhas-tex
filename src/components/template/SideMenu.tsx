@@ -9,7 +9,7 @@ export default function SideMenu() {
     const { logout } = useAuth()
 
     return (
-        <aside className={`flex flex-col bg-gray-200 text-gray-900 dark:bg-gray-900 dark:text-gray-200`}>
+        <aside className={`flex flex-col items-center bg-gray-200 text-gray-900 dark:bg-gray-900 dark:text-gray-200 w-[15%] max-w-[80px]`}>
             <div className="w-20 h-20 p-1 flex items-center justify-center">
                 {/* <img src={TexLogo.src} alt="Tex logo" /> */}
             </div>
