@@ -5,6 +5,7 @@ import Issue from "../core/Issue"
 import useVisualization from "./useVisualization"
 import useAuth from "../data/hook/useAuth"
 import { storage } from "../firebase/config"
+import { ref, deleteObject } from "firebase/storage"
 import useCollections from "./useCollections"
 import Collection from "../core/collection"
 
@@ -46,14 +47,13 @@ export default function useIssues() {
         });
         const tempCol = collections.find(col => col.name === issue.collection)
         var newQtyEditions = tempCol.qtyEditions - 1
-        var newQtyPages = tempCol.qtyPages - issue.pagesQty
+        var newQtyPages = Number(tempCol.qtyPages) - Number(issue.pagesQty)
         var newPrice = Number(tempCol.totalPrice) - Number(issue.price)
         const newCol = new Collection(tempCol.id, tempCol.name, tempCol.cover, newQtyEditions, newQtyPages, newPrice)
         saveCollection(newCol)
-        await repo.delete(issue)
         try {
-            const fileRef = storage.refFromURL(issue.coverURL);
-            await fileRef.delete();
+            const fileRef = ref(storage, issue.coverURL);
+            await deleteObject(fileRef);
         } catch (error) {
             console.error("Erro ao deletar o arquivo:", error);
         }
@@ -63,7 +63,7 @@ export default function useIssues() {
     async function saveIssue(issue: Issue) {
         const tempCol = collections.find(col => col.name === issue.collection)
         var newQtyEditions = tempCol.qtyEditions + 1
-        var newQtyPages = tempCol.qtyPages + issue.pagesQty
+        var newQtyPages = Number(tempCol.qtyPages) + Number(issue.pagesQty)
         var newPrice = Number(tempCol.totalPrice) + Number(issue.price)
         const newCol = new Collection(tempCol.id, tempCol.name, tempCol.cover, newQtyEditions, newQtyPages, newPrice)
         saveCollection(newCol)

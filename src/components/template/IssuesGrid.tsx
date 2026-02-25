@@ -34,7 +34,7 @@ export default function IssuesGrid(props: IssueGridProps) {
     function renderData() {
         return props.issues?.map((issue, i) => {
             return (
-                <div key={issue.id} className="flex flex-col flex-grow w-full shadow-2xl md:w-1/2 lg:w-1/3 xl:w-1/4 border border-gray-700 p-2 m-2 text-gray-700 dark:text-gray-300">
+                <div key={issue.id} className="flex flex-col flex-grow w-full shadow-2xl border border-gray-700 p-2 text-gray-700 dark:text-gray-300">
                     <div className="flex flex-row justify-between mb-2">
                         <span>#{issue.edition}</span>
                         <span>{issue.month} / {issue.year}</span>
@@ -79,7 +79,7 @@ export default function IssuesGrid(props: IssueGridProps) {
     }
 
     return (
-        <div className="flex flex-wrap justify-center m-2 mb-4 p-1">
+        <div className="grid grid-cols-2 gap-4 mb-4 p-4 w-full">
             {renderData()}
         </div>
     )
