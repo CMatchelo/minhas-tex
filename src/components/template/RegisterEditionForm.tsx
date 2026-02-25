@@ -4,6 +4,7 @@ import Issue from "../../core/Issue";
 import Button from "./Button";
 import useCollections from "../../hooks/useCollections";
 import { storage } from '../../firebase/config';
+import { ref, uploadBytes, getBytes, getDownloadURL } from 'firebase/storage';
 import useAuth from "../../data/hook/useAuth";
 
 interface RegisterEditionFormProps {
@@ -79,9 +80,9 @@ export default function RegisterEditionForm(props: RegisterEditionFormProps) {
         }
         if (coverURL) {
             const renamedFile = renameFile(coverURL);
-            const storageRef = storage.ref(`${user.uid}/capas/${renamedFile.name}`);
-            await storageRef.put(renamedFile);
-            newImage = await storageRef.getDownloadURL();
+            const storageRef = ref(storage, `${user.uid}/capas/${renamedFile.name}`);
+            await uploadBytes(storageRef, renamedFile);
+            newImage = await getDownloadURL(storageRef);
         } else {
             newImage = downloadURL
         }
