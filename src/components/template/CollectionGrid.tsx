@@ -14,16 +14,14 @@ interface CollectionGridProps {
 export default function CollectionGrid(props: CollectionGridProps) {
   const router = useRouter();
   const { issues } = useIssues();
-  const totalPrice = props.collections.reduce(
-    (acc, collection) => acc + collection.totalPrice,
-    0,
-  );
-  const totalIssues = props.collections.reduce(
-    (acc, collection) => acc + collection.qtyEditions,
-    0,
-  );
-  const totalPages = props.collections.reduce(
-    (acc, collection) => acc + collection.qtyPages,
+  const totalPrice = issues.reduce((acc, issue) => {
+    acc += Number(issue.price);
+    console.log(issue.price)
+    return acc;
+  }, 0);
+  const totalIssues = issues.length;
+  const totalPages = issues.reduce(
+    (acc, issue) => acc + Number(issue.pagesQty),
     0,
   );
 
