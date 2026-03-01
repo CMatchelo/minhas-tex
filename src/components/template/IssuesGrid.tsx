@@ -12,25 +12,6 @@ export default function IssuesGrid(props: IssueGridProps) {
 
     const displayActions = props.deleteIssue || props.selectIssue
 
-    function renderHeader() {
-        return (
-            <tr>
-                <th>Title</th>
-                <th>Edition</th>
-                <th>Pages</th>
-                {displayActions ? <th>Ações</th> : false}
-            </tr>
-        )
-    }
-
-    /* <div key={issue.id}>
-                    <td>{issue.title}</td>
-                    <td>{issue.edition}</td>
-                    <td>{issue.pagesQty}</td>
-                    {displayActions ? renderActions(issue) : false}
-                </div> 
-                */
-
     function renderData() {
         return props.issues?.map((issue, i) => {
             return (
@@ -67,14 +48,14 @@ export default function IssuesGrid(props: IssueGridProps) {
 
     function renderActions(issue: Issue) {
         return (
-            <td className="mt-4">
+            <div className="mt-4">
                 {props.selectIssue ? (
                     <button className="mr-2 rounded-full p-2 hover:bg-yellow-500 transition-all duration-300" onClick={() => props.selectIssue?.(issue)}>{IconEdit}</button>
                 ) : false}
                 {props.deleteIssue ? (
                     <button className="ml-2 rounded-full p-2 hover:bg-red-700 transition-all duration-300" onClick={() => props.deleteIssue?.(issue)}>{IconDelete}</button>
                 ) : false}
-            </td>
+            </div>
         )
     }
 
