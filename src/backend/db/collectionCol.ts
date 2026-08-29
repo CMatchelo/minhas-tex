@@ -5,7 +5,6 @@ import {
   collection,
   getDocs,
   doc,
-  getDoc,
   setDoc,
   addDoc,
   deleteDoc,
@@ -24,6 +23,7 @@ export default class CollectionCol implements CollectionRepository {
     toFirestore(collection: Collection) {
       return {
         name: collection.name,
+        cover: collection.cover,
         qtyEditions: collection.qtyEditions,
         qtyPages: collection.qtyPages,
         totalPrice: collection.totalPrice,
@@ -47,20 +47,23 @@ export default class CollectionCol implements CollectionRepository {
   };
 
   async save(collectionData: Collection): Promise<Collection> {
+    const colRef = this.collection();
     if (collectionData?.id) {
       // update
-      const ref = doc(
-        db,
-        `users/${this.userId}/collections/${collectionData.id}`
-      );
+      const ref = doc(colRef, collectionData.id);
       await setDoc(ref, collectionData);
       return collectionData;
     } else {
-      // create
-      const colRef = this.collection();
+      // create — build the result locally instead of reading the doc back
       const docRef = await addDoc(colRef, collectionData);
-      const snapshot = await getDoc(docRef);
-      return snapshot.data()!;
+      return new Collection(
+        docRef.id,
+        collectionData.name,
+        collectionData.cover,
+        collectionData.qtyEditions,
+        collectionData.qtyPages,
+        collectionData.totalPrice
+      );
     }
   }
 

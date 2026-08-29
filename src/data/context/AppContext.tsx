@@ -1,31 +1,46 @@
 import { createContext, useEffect, useState } from "react";
 
-//type Theme = 'dark' | ''
+type Theme = "dark" | "";
 
 interface AppContextProps {
-    theme?: string
+    theme?: Theme
     changeTheme?: () => void
 }
 
 const AppContext = createContext<AppContextProps>({
-    theme: null,
+    theme: "dark",
     changeTheme: null
 })
 
+function resolveInitialTheme(): Theme {
+    if (typeof window === "undefined") return "dark"
+    const saved = window.localStorage.getItem("theme")
+    if (saved === "dark" || saved === "") return saved
+    const prefersLight = window.matchMedia?.("(prefers-color-scheme: light)").matches
+    return prefersLight ? "" : "dark"
+}
+
 export function AppProvider(props) {
 
-    const [ theme, setTheme ] = useState('dark')
+    const [theme, setTheme] = useState<Theme>("dark")
 
     function changeTheme() {
-        const newTheme = theme === '' ? 'dark' : ''
+        const newTheme: Theme = theme === "" ? "dark" : ""
         setTheme(newTheme)
-        localStorage.setItem('theme', newTheme)
+        try {
+            localStorage.setItem("theme", newTheme)
+        } catch {
+            // localStorage indisponível (modo privado, etc.)
+        }
     }
 
     useEffect(() => {
-        const savedTheme = localStorage.getItem('theme')
-        setTheme(savedTheme)
+        setTheme(resolveInitialTheme())
     }, [])
+
+    useEffect(() => {
+        document.documentElement.classList.toggle("dark", theme === "dark")
+    }, [theme])
 
     return (
         <AppContext.Provider value={{

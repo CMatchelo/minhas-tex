@@ -4,6 +4,7 @@ import { createContext, useEffect, useState } from "react";
 import firebaseApp from "../../firebase/config";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, signOut, onIdTokenChanged, GoogleAuthProvider, User as FirebaseUser } from "firebase/auth";
 import User from "../../model/User";
+import { clearCache } from "../cache/localCache";
 
 const auth = getAuth(firebaseApp);
 
@@ -96,8 +97,10 @@ export function AuthProvider(props) {
     async function logout() {
         try {
             setLoading(true)
+            const uid = user?.uid
             await signOut(auth)
             await managerSession(null)
+            if (uid) clearCache(uid)
         } finally {
             setLoading(false)
         }

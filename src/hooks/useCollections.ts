@@ -1,29 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Collection from "../core/collection";
 import CollectionRepository from "../core/collectionRepository";
 import CollectionCol from "../backend/db/collectionCol";
 import useVisualization from "./useVisualization";
 import useAuth from "../data/hook/useAuth"
+import { useData } from "../data/context/DataContext"
 
 export default function useCollections() {
 
     const { user } = useAuth()
+    const { collections, loadingCollections, addOrUpdateCollection, removeCollection, refresh } = useData()
     const repo: CollectionRepository = new CollectionCol(user?.uid)
 
-    const [ collection, setCollection ] = useState<Collection>(Collection.empty())
-    const [ collections, setCollections] = useState<Collection[]>([])
-    const {formVisible, tableVisible, showForm, showTable} = useVisualization()
-
-    useEffect(() => {
-        getAll()
-    }, [user])
+    const [collection, setCollection] = useState<Collection>(Collection.empty())
+    const { formVisible, tableVisible, showForm, showTable } = useVisualization()
 
     function getAll() {
-        console.log("getting all collections")
-        repo.getAll().then(collections => {
-            setCollections(collections)
-            showTable()            
-        })
+        return refresh(true)
     }
 
     function selectCollection(collection: Collection) {
@@ -33,12 +26,13 @@ export default function useCollections() {
 
     async function deleteCollection(collection: Collection) {
         await repo.delete(collection)
-        getAll()
+        removeCollection(collection)
     }
 
     async function saveCollection(collection: Collection) {
-        await repo.save(collection)
-        getAll()
+        const saved = await repo.save(collection)
+        addOrUpdateCollection(saved)
+        showTable()
     }
 
     function newCollection() {
@@ -47,7 +41,9 @@ export default function useCollections() {
     }
 
     return {
+        loading: loadingCollections,
         tableVisible,
+        formVisible,
         showTable,
         collection,
         collections,
@@ -57,5 +53,4 @@ export default function useCollections() {
         selectCollection,
         getAll,
     }
-
 }

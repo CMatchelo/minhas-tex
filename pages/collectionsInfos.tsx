@@ -16,16 +16,18 @@ export default function CollectionsInfos() {
   return (
     <Layout title="Minhas coleções" subtitle="Gerencie suas coleções aqui">
       {tableVisible ? (
-        <>
-          <div className="flex justify-start w-full px-4">
+        <div className="w-full">
+          <div className="rounded-lg bg-gray-200 dark:bg-gray-900 p-4">
             <CollectionGrid
               collections={collections}
               selectedCollection={selectCollection}
               deleteCollection={deleteCollection}
             />
           </div>
-          <Button className="mt-4" color="yellow" onClick={newCollection}> Nova coleção </Button>
-        </>
+          <div className="mt-4 flex justify-end">
+            <Button color="yellow" onClick={newCollection}>Nova coleção</Button>
+          </div>
+        </div>
       ) : (
         <RegisterCollecttionForm
           collection={collection}

@@ -1,18 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  purge: {
-    content: [
-      "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-      "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-      "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    ],
-    safelist: [
-      {
-        pattern: /^(bg|from|to)/
-      }
-    ]
-  },
-  darkMode: 'class',
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  safelist: [
+    {
+      pattern: /^(bg|from|to)-/,
+    },
+    {
+      // icon helpers build size classes dynamically (h-5 w-5, etc.)
+      pattern: /^(w|h)-(3|4|5|6|8|10|12|16)$/,
+    },
+  ],
+  darkMode: "class",
   theme: {
     extend: {
       backgroundImage: {

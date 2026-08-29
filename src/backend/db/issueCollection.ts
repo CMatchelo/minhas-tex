@@ -6,7 +6,6 @@ import {
   collection,
   doc,
   getDocs,
-  getDoc,
   setDoc,
   addDoc,
   deleteDoc,
@@ -62,21 +61,29 @@ export default class IssueCollection implements IssueRepository {
   };
 
   async save(issue: Issue): Promise<Issue> {
+    const colRef = this.collection();
     if (issue?.id) {
       // update
-      const ref = doc(
-        db,
-        `users/${this.userId}/issues/${issue.id}`
-      );
+      const ref = doc(colRef, issue.id);
       await setDoc(ref, issue);
       return issue;
     } else {
-      // create
-      const colRef = this.collection();
+      // create — build the result locally instead of reading the doc back
       const docRef = await addDoc(colRef, issue);
-
-      const snap = await getDoc(docRef);
-      return snap.data()!;
+      return new Issue(
+        issue.title,
+        issue.edition,
+        issue.pagesQty,
+        issue.collection,
+        issue.coverURL,
+        issue.month,
+        issue.year,
+        issue.price,
+        issue.writer,
+        issue.artist,
+        issue.additionalStories,
+        docRef.id
+      );
     }
   }
 

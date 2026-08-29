@@ -1,32 +1,23 @@
-import { useEffect, useState } from "react"
 import IssueCollection from "../backend/db/issueCollection"
 import IssueRepository from "../core/IssueRepository"
 import Issue from "../core/Issue"
+import { useState } from "react"
 import useVisualization from "./useVisualization"
 import useAuth from "../data/hook/useAuth"
+import { useData } from "../data/context/DataContext"
 import { storage } from "../firebase/config"
 import { ref, deleteObject } from "firebase/storage"
-import useCollections from "./useCollections"
-import Collection from "../core/collection"
 
 export default function useIssues() {
     const { user } = useAuth()
-    const { collections, saveCollection } = useCollections();
+    const { issues, loadingIssues, addOrUpdateIssue, removeIssue, refresh } = useData()
 
     const [issue, setIssue] = useState<Issue>(Issue.empty())
-    const [issues, setIssues] = useState<Issue[]>([])
     const { formVisible, tableVisible, showForm, showTable } = useVisualization()
     const repo: IssueRepository = new IssueCollection(user?.uid)
 
-    useEffect(() => {
-        getAll()
-    }, [user]);
-
     function getAll() {
-        repo.getAll().then(issues => {
-            setIssues(issues)
-            showTable()
-        })
+        return refresh(true)
     }
 
     function selectIssue(issue: Issue) {
@@ -35,41 +26,27 @@ export default function useIssues() {
     }
 
     async function deleteIssue(issue: Issue) {
-        const id = issue.id
-        setIssues((prevIssues) => {
-            const index = prevIssues.findIndex(issue => issue.id === id);
-            if (index !== -1) {
-                const newIssues = [...prevIssues];
-                newIssues.splice(index, 1);
-                return newIssues;
+        await repo.delete(issue)
+        removeIssue(issue)
+
+        if (issue.coverURL) {
+            try {
+                const fileRef = ref(storage, issue.coverURL)
+                await deleteObject(fileRef)
+            } catch (error: any) {
+                // Ignora quando o arquivo já não existe no Storage
+                if (error?.code !== "storage/object-not-found") {
+                    console.error("Erro ao deletar o arquivo:", error)
+                }
             }
-            return prevIssues;
-        });
-        const tempCol = collections.find(col => col.name === issue.collection)
-        var newQtyEditions = tempCol.qtyEditions - 1
-        var newQtyPages = Number(tempCol.qtyPages) - Number(issue.pagesQty)
-        var newPrice = Number(tempCol.totalPrice) - Number(issue.price)
-        const newCol = new Collection(tempCol.id, tempCol.name, tempCol.cover, newQtyEditions, newQtyPages, newPrice)
-        saveCollection(newCol)
-        try {
-            const fileRef = ref(storage, issue.coverURL);
-            await deleteObject(fileRef);
-        } catch (error) {
-            console.error("Erro ao deletar o arquivo:", error);
         }
-        //getAll()
     }
 
-    async function saveIssue(issue: Issue) {
-        const tempCol = collections.find(col => col.name === issue.collection)
-        var newQtyEditions = tempCol.qtyEditions + 1
-        var newQtyPages = Number(tempCol.qtyPages) + Number(issue.pagesQty)
-        var newPrice = Number(tempCol.totalPrice) + Number(issue.price)
-        const newCol = new Collection(tempCol.id, tempCol.name, tempCol.cover, newQtyEditions, newQtyPages, newPrice)
-        saveCollection(newCol)
-        await repo.save(issue)
+    async function saveIssue(issue: Issue): Promise<Issue> {
+        const saved = await repo.save(issue)
+        addOrUpdateIssue(saved)
         showTable()
-        //getAll()
+        return saved
     }
 
     function newIssue() {
@@ -78,15 +55,16 @@ export default function useIssues() {
     }
 
     return {
+        loading: loadingIssues,
         tableVisible,
+        formVisible,
         showTable,
         issue,
         issues,
-        setIssues,
         newIssue,
         saveIssue,
         deleteIssue,
         selectIssue,
-        getAll
+        getAll,
     }
 }

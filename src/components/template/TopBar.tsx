@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Title from "./Title";
 import BtnChangeTheme from "./BtnChangeTheme";
 import useAppData from "../../data/hook/useAppData";
@@ -15,26 +15,21 @@ export default function TopBar(props: TopBarProps) {
     const { theme, changeTheme } = useAppData()
 
     return (
-        <div className={`flex bg-gray-200 dark:bg-gray-700 p-4`}>
-            <div className=" flex flex-col md:flex-row">
+        <header className="flex items-center gap-3 bg-gray-200 dark:bg-gray-700 px-4 py-3 md:px-6 md:py-4">
+            <div className="flex flex-col min-w-0 md:flex-row md:items-center md:gap-4">
                 <Title title={props.title} subtitle={props.subtitle} />
-                <div className="flex items-center text-md md:text-xl font-bold md:ml-5 dark:text-gray-200">
-                    {props.sortedIssues && (
-                        <div>
-                            {props.sortedIssues?.length > 0 ? (
-                                <span>{props.sortedIssues.length} edições encontradas </span>
-                            ) : (
-                                <span> Oops, não encontramos revistas para exibir </span>
-                            )}
-                        </div>
-                    )}
-
-                </div>
+                {props.sortedIssues && (
+                    <span className="mt-1 md:mt-0 inline-flex w-fit items-center rounded-full bg-yellow-500/15 text-yellow-700 dark:text-yellow-300 px-3 py-1 text-xs md:text-sm font-semibold">
+                        {props.sortedIssues.length > 0
+                            ? `${props.sortedIssues.length} edições encontradas`
+                            : "Nenhuma revista para exibir"}
+                    </span>
+                )}
             </div>
-            <div className={`flex flex-grow justify-end items-center`}>
+            <div className="flex flex-grow justify-end items-center gap-2">
                 <BtnChangeTheme theme={theme} changeTheme={changeTheme} />
-                <UserAvatar className="ml-2" />
+                <UserAvatar />
             </div>
-        </div>
+        </header>
     )
 }

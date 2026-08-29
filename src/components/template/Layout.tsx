@@ -1,5 +1,6 @@
 import React from "react"
 import SideMenu from "./SideMenu"
+import BottomNav from "./BottomNav"
 import TopBar from "./TopBar"
 import Content from "./Content"
 import useAppData from "../../data/hook/useAppData"
@@ -18,16 +19,13 @@ export default function Layout(props: LayoutProps) {
 
     return (
         <AuthCheck>
-            <div className={`
-            ${theme} flex h-screen w-screen
-        `}>
+            <div className={`${theme} flex h-screen w-full overflow-hidden`}>
                 <SideMenu />
-                <div className={`
-                flex flex-col w-full bg-gray-300 dark:bg-gray-800
-            `}>
+                <div className="flex flex-col flex-1 min-w-0 bg-gray-300 dark:bg-gray-800">
                     <TopBar sortedIssues={props.sortedIssues} title={props.title} subtitle={props.subtitle} />
                     <Content>{props.children}</Content>
                 </div>
+                <BottomNav />
             </div>
         </AuthCheck>
     )

@@ -1,18 +1,24 @@
 import { useId } from "react"
 
-interface InputProps {
-    text?: string
-    type?: "text" | "number" | "email" | "password" | "date"
-    value?: any
-    readOnly?: boolean
-    onChange?: (value: any) => void
-    className?: string
-    placeholder?: string
-    error?: string
+interface SelectOption {
+    label: string
+    value: string
 }
 
-export default function Input(props: InputProps) {
-    const id = useId()
+interface SelectProps {
+    text?: string
+    value?: string
+    onChange?: (value: string) => void
+    options: SelectOption[]
+    placeholder?: string
+    className?: string
+    error?: string
+    id?: string
+}
+
+export default function Select(props: SelectProps) {
+    const generatedId = useId()
+    const id = props.id ?? generatedId
 
     return (
         <div className={`flex flex-col ${props.className ?? ""}`}>
@@ -21,24 +27,27 @@ export default function Input(props: InputProps) {
                     {props.text}
                 </label>
             )}
-            <input
+            <select
                 id={id}
-                type={props.type ?? "text"}
                 value={props.value}
-                readOnly={props.readOnly}
                 onChange={e => props.onChange?.(e.target.value)}
-                placeholder={props.placeholder}
                 aria-invalid={props.error ? true : undefined}
                 className={`
                     bg-gray-200 dark:bg-gray-700 rounded-lg
                     border ${props.error ? "border-red-500" : "border-transparent border-b-yellow-500"}
                     px-4 py-2 text-gray-700 dark:text-gray-200
-                    transition-shadow
+                    transition-shadow cursor-pointer
                     focus:outline-none focus:ring-2
                     ${props.error ? "focus:ring-red-500" : "focus:ring-yellow-500"}
-                    read-only:opacity-70 read-only:cursor-default
                 `}
-            />
+            >
+                {props.placeholder && <option value="">{props.placeholder}</option>}
+                {props.options.map(opt => (
+                    <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                    </option>
+                ))}
+            </select>
             {props.error && (
                 <span className="mt-1 text-xs text-red-500">{props.error}</span>
             )}

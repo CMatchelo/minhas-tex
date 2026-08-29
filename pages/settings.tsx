@@ -4,6 +4,7 @@ import useIssues from "../src/hooks/useIssues";
 import useCollections from "../src/hooks/useCollections";
 import Issue from "../src/core/Issue";
 import Collection from "../src/core/collection";
+import CurrencyFormatter from "../src/functions/formatCurrency";
 
 export default function Settings() {
   const { issues } = useIssues();
@@ -92,13 +93,6 @@ export default function Settings() {
       acc[col].totalPrice += Number(issue.price);
       acc[col].qtyPages += Number(issue.pagesQty);
       acc[col].qtyEditions += 1;
-      console.log(
-        col,
-        acc[col].count,
-        acc[col].totalPrice,
-        acc[col].qtyPages,
-        acc[col].qtyEditions
-      );
       return acc;
     }, {});
 
@@ -126,7 +120,6 @@ export default function Settings() {
         return compareFn(a, b) ? col : best;
       }, collections[0]);
 
-      console.log(stats[result.name]);
       return {
         name: result.name,
         ...stats[result.name],
@@ -156,108 +149,64 @@ export default function Settings() {
     setMinEdCollection(pickCollection((a, b) => a.qtyEditions < b.qtyEditions));
   }, [issues, collections]);
 
-  useEffect(() => {
-    console.log(biggestCollection, smallestCollection, expenseCollection, cheapestCollection, mostEdCollection, minEdCollection)
-  }, [biggestCollection, smallestCollection, expenseCollection, cheapestCollection, mostEdCollection, minEdCollection])
-
-  function RenderIssue({ header, info, textInfo, edition, title, collection }) {
+  function StatCard({ header, value, unit, currency = false, subtitle }: {
+    header: string
+    value: any
+    unit?: string
+    currency?: boolean
+    subtitle?: string
+  }) {
     return (
-      <div className="p-3 bg-gray-200 bg-opacity-5 shadow-lg">
-        <h2 className="text-lg">{header}</h2>
-        <h3>
-          {info} {textInfo}
-        </h3>
-        <h3>
-          #{edition} - {title} - {collection}
-        </h3>
-      </div>
-    );
-  }
-
-  function RenderCollection({ header, info, textInfo, title }) {
-    return (
-      <div className="p-3 bg-gray-200 bg-opacity-5 shadow-lg">
-        <h2 className="text-lg">{header}</h2>
-        <h3>
-          {info} {textInfo}
-        </h3>
-        <h3>{title}</h3>
+      <div className="flex flex-col gap-1 rounded-lg bg-white dark:bg-gray-700 shadow p-4">
+        <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+          {header}
+        </h2>
+        <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
+          {currency
+            ? <CurrencyFormatter value={Number(value) || 0} />
+            : <>{value ?? 0}{unit ? ` ${unit}` : ""}</>}
+        </p>
+        {subtitle && (
+          <p className="text-sm text-gray-600 dark:text-gray-300 truncate">{subtitle}</p>
+        )}
       </div>
     );
   }
 
   return (
     <Layout title="Informações" subtitle="Dados sobre suas coleções e revistas">
-      <div className="grid grid-cols-2 gap-4 w-full p-4 ">
-        <RenderIssue
-          header="Revista com mais páginass"
-          info={biggestIssue.pagesQty}
-          textInfo="páginas"
-          edition={biggestIssue.edition}
-          title={biggestIssue.title}
-          collection={biggestIssue.collection}
-        />
-        <RenderIssue
-          header="Revista com menos páginas"
-          info={smallestIssue.pagesQty}
-          textInfo="páginas"
-          edition={smallestIssue.edition}
-          title={smallestIssue.title}
-          collection={smallestIssue.collection}
-        />
-        <RenderIssue
-          header="Revista mais cara"
-          info={expenseIssue.price}
-          textInfo="reais"
-          edition={expenseIssue.edition}
-          title={expenseIssue.title}
-          collection={expenseIssue.collection}
-        />
-        <RenderIssue
-          header="Revista mais barata"
-          info={cheapestIssue.price}
-          textInfo="reais"
-          edition={cheapestIssue.edition}
-          title={cheapestIssue.title}
-          collection={cheapestIssue.collection}
-        />
+      <div className="w-full space-y-6">
+        <section>
+          <h3 className="mb-3 text-sm font-bold text-gray-700 dark:text-gray-200">Revistas</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <StatCard header="Revista com mais páginas" value={biggestIssue.pagesQty} unit="páginas"
+              subtitle={`#${biggestIssue.edition} · ${biggestIssue.title} · ${biggestIssue.collection}`} />
+            <StatCard header="Revista com menos páginas" value={smallestIssue.pagesQty} unit="páginas"
+              subtitle={`#${smallestIssue.edition} · ${smallestIssue.title} · ${smallestIssue.collection}`} />
+            <StatCard header="Revista mais cara" value={expenseIssue.price} currency
+              subtitle={`#${expenseIssue.edition} · ${expenseIssue.title} · ${expenseIssue.collection}`} />
+            <StatCard header="Revista mais barata" value={cheapestIssue.price} currency
+              subtitle={`#${cheapestIssue.edition} · ${cheapestIssue.title} · ${cheapestIssue.collection}`} />
+          </div>
+        </section>
 
-        <RenderCollection
-          header="Coleção com mais páginas"
-          info={biggestCollection.qtyPages}
-          textInfo="páginas"
-          title={biggestCollection.name}
-        />
-        <RenderCollection
-          header="Coleção com menos páginas"
-          info={smallestCollection.qtyPages}
-          textInfo="páginas"
-          title={smallestCollection.name}
-        />
-        <RenderCollection
-          header="Coleção mais cara"
-          info={expenseCollection.totalPrice}
-          textInfo="reais"
-          title={expenseCollection.name}
-        />
-        <RenderCollection
-          header="Coleção mais barata"
-          info={cheapestCollection.totalPrice}
-          textInfo="reais"
-          title={cheapestCollection.name}
-        />
-        <RenderCollection
-          header="Coleção com mais edições"
-          info={mostEdCollection.qtyEditions}
-          textInfo="edições"
-          title={mostEdCollection.name}
-        />
-        <RenderCollection
-          header="Coleção com menos edições"
-          info={minEdCollection.qtyEditions}
-          textInfo="edições"
-          title={minEdCollection.name}
-        />
+        <section>
+          <h3 className="mb-3 text-sm font-bold text-gray-700 dark:text-gray-200">Coleções</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <StatCard header="Coleção com mais páginas" value={biggestCollection.qtyPages} unit="páginas"
+              subtitle={biggestCollection.name} />
+            <StatCard header="Coleção com menos páginas" value={smallestCollection.qtyPages} unit="páginas"
+              subtitle={smallestCollection.name} />
+            <StatCard header="Coleção mais cara" value={expenseCollection.totalPrice} currency
+              subtitle={expenseCollection.name} />
+            <StatCard header="Coleção mais barata" value={cheapestCollection.totalPrice} currency
+              subtitle={cheapestCollection.name} />
+            <StatCard header="Coleção com mais edições" value={mostEdCollection.qtyEditions} unit="edições"
+              subtitle={mostEdCollection.name} />
+            <StatCard header="Coleção com menos edições" value={minEdCollection.qtyEditions} unit="edições"
+              subtitle={minEdCollection.name} />
+          </div>
+        </section>
       </div>
     </Layout>
   );
